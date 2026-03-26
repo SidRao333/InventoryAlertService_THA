@@ -2,6 +2,7 @@ Build and Run Instructions
 
 Prerequisites
 JDK 17 or higher
+
 Maven (or use given ./mvnw wrapper)
 
 Build the Project:
