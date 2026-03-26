@@ -2,6 +2,7 @@ package com.inventory.alert_service;
 
 import com.inventory.alert_service.domain.Product;
 import com.inventory.alert_service.exception.InsufficientStockException;
+import com.inventory.alert_service.service.AlertEngine;
 import com.inventory.alert_service.service.InventoryService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -20,9 +21,12 @@ import static org.mockito.Mockito.*;
 class InventoryServiceTest {
     private InventoryService inventoryService;
 
+    @Mock
+    private AlertEngine alertEngine;
+
     @BeforeEach
     void setUp() {
-        inventoryService = new InventoryService();
+        inventoryService = new InventoryService(alertEngine);
     }
 
     @Test
@@ -37,6 +41,7 @@ class InventoryServiceTest {
         inventoryService.updateStock("SKU1", -7);
         assertEquals(8, p.getCurrentStock());
 
+        verify(alertEngine, atLeastOnce()).evaluate(p);
     }
 
     @Test

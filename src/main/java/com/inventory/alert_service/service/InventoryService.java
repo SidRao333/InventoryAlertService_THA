@@ -12,7 +12,11 @@ import org.springframework.stereotype.Service;
 public class InventoryService {
 
     private final Map<String, Product> products = new ConcurrentHashMap<>();
+    private final AlertEngine alertEngine;
 
+    public InventoryService(AlertEngine alertEngine) {
+        this.alertEngine = alertEngine;
+    }
 
     public void addProduct(Product product) {
         if (products.containsKey(product.getSku())) {
@@ -32,6 +36,6 @@ public class InventoryService {
         }
 
         product.setCurrentStock(newStock);
-
+        alertEngine.evaluate(product);
     }
 }
