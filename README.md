@@ -25,7 +25,7 @@ Run Tests:
 ./mvnw test -Dtest=InventoryServiceTest#testUpdateStock_Success
 
 Note:
-Could note implement RestAPI and could not containerize the project using docker.
+Could not implement RestAPI and could not containerize the project using docker.
 Used spring initialzr and lombok to avoid boilerplate code.
 Persistence is currently handled in-memory using ConcurrentHashMap.
 Robust validation required.
