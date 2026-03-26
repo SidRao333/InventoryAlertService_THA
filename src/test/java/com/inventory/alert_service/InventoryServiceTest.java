@@ -52,4 +52,29 @@ class InventoryServiceTest {
 
         assertThrows(InsufficientStockException.class, () -> inventoryService.updateStock("SKU1", -6));
     }
+
+    @Test
+    @DisplayName("Should return low stock products at exact threshold")
+    void testGetLowStockProducts_Boundary() {
+        Product p1 = Product.builder().sku("P1").currentStock(5).reorderThreshold(5).build();
+        Product p2 = Product.builder().sku("P2").currentStock(4).reorderThreshold(5).build();
+
+        inventoryService.addProduct(p1);
+        inventoryService.addProduct(p2);
+
+        List<Product> lowStock = inventoryService.getLowStockProducts();
+
+        assertEquals(1, lowStock.size(), "Only product below threshold should be returned");
+        assertEquals("P2", lowStock.get(0).getSku());
+    }
+
+    @Test
+    @DisplayName("Should handle duplicate SKU by throwing exception")
+    void testAddProduct_DuplicateSku() {
+        Product p1 = Product.builder().sku("DUP").build();
+        Product p2 = Product.builder().sku("DUP").build();
+
+        inventoryService.addProduct(p1);
+        assertThrows(IllegalArgumentException.class, () -> inventoryService.addProduct(p2));
+    }
 }

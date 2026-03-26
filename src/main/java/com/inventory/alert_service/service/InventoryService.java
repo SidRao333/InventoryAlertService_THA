@@ -3,6 +3,7 @@ package com.inventory.alert_service.service;
 import com.inventory.alert_service.domain.Product;
 import com.inventory.alert_service.exception.InsufficientStockException;
 
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -37,5 +38,11 @@ public class InventoryService {
 
         product.setCurrentStock(newStock);
         alertEngine.evaluate(product);
+    }
+
+    public List<Product> getLowStockProducts() {
+        return products.values().stream()
+                .filter(p -> p.getCurrentStock() < p.getReorderThreshold())
+                .toList();
     }
 }

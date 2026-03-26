@@ -42,4 +42,32 @@ public class AlertTest {
         verify(mock2, times(1)).onAlert(any(AlertEvent.class));
     }
 
+    @ParameterizedTest
+    @CsvSource({
+            "100, 11, LOW",
+            "100, 10, CRITICAL",
+            "100, 5,  CRITICAL",
+            "50,  6,  LOW",
+            "50,  5,  CRITICAL"
+    })
+    @DisplayName("Should compute severity correctly based on threshold %")
+    void testSeverityComputation(int threshold, int currentStock, String expectedSeverity) {
+        Product p = Product.builder().sku("T1").reorderThreshold(threshold).currentStock(currentStock).build();
+
+        alertEngine.evaluate(p);
+
+        ArgumentCaptor<AlertEvent> captor = ArgumentCaptor.forClass(AlertEvent.class);
+        verify(mockListener).onAlert(captor.capture());
+
+        assertEquals(expectedSeverity, captor.getValue().severity().name());
+    }
+
+    @Test
+    @DisplayName("Should not fire alert when stock is above threshold")
+    void testNoAlertWhenStockIsHigh() {
+        Product p = Product.builder().sku("H1").reorderThreshold(10).currentStock(15).build();
+        alertEngine.evaluate(p);
+        verify(mockListener, never()).onAlert(any());
+    }
+
 }
