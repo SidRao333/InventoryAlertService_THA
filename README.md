@@ -25,6 +25,18 @@ Run Tests:
 -Run a specific test
 ./mvnw test -Dtest=InventoryServiceTest#testUpdateStock_Success
 
+Rest API's: (Use postman or curl to test)
+
+Add a product (Post) - 
+curl -X POST http://localhost:8080/products -H "Content-Type: application/json" -d '{"id":"1","name":"Laptop","sku":"LAP123","category":"Electronics","currentStock":50,"reorderThreshold":10}'
+
+Update stock (Patch) - 
+curl -X PATCH http://localhost:8080/products/LAP123/stock -H "Content-Type: application/json" -d '{"delta":-41}'
+
+Get in memory alert list (Get) -
+curl http://localhost:8080/alerts
+
+
 Note:
 Could not implement RestAPI and could not containerize the project using docker.
 Used spring initialzr and lombok to avoid boilerplate code.
