@@ -6,6 +6,10 @@ JDK 17 or higher
 
 Maven (or use given ./mvnw wrapper)
 
+Docker
+
+
+
 Build the Project:
 
 ./mvnw clean install
@@ -13,6 +17,12 @@ Build the Project:
 Run the Application:
 
 ./mvnw spring-boot:run
+
+
+Build with Docker:
+
+docker compose up --build
+
 
 
 
@@ -31,6 +41,7 @@ Run Tests:
 -Run a specific test
 
 ./mvnw test -Dtest=InventoryServiceTest#testUpdateStock_Success
+
 
 
 
